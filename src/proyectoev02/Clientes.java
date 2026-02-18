@@ -1,33 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package proyectoev02;
-import java.sql.*;
+package modeloTablas;
+
 /**
- *
- * @author USUARIO
+ * Clase que representa la entidad Cliente en la base de datos software_barberia.
+ * Esta clase debe coincidir con las columnas de tu tabla 'cliente'.
  */
 public class Clientes {
-    
-  package com.proyecto.modelo;
 
-public class Usuario {
-    
-    private int idUsuario;
+    // Variables basadas en las columnas de tu tabla 'cliente'
+    private int id_cliente;
     private String nombre;
-    private String email; 
+    private String apellido;
+    private String celular;
+    private String correo;
+    private String password;
 
-    // Constructor vacío (necesario en muchos frameworks)
-    public Usuario() {} 
-
-    // Métodos Getters y Setters (Estándar: lowerCamelCase en el método)
-    public int getIdUsuario() {
-        return idUsuario;
+    // Constructor vacío (necesario para muchos frameworks y DAO)
+    public Clientes() {
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    // Constructor con parámetros
+    public Clientes(int id_cliente, String nombre, String apellido, String celular, String correo, String password) {
+        this.id_cliente = id_cliente;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.celular = celular;
+        this.correo = correo;
+        this.password = password;
+    }
+
+    // Métodos Getters y Setters
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
     public String getNombre() {
@@ -37,14 +44,36 @@ public class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public string getEmail(){
-        return Email;
-    }
-    public void setEmail(String nombre ) {
-        this.email = Email;
-        
+
+    public String getApellido() {
+        return apellido;
     }
 
-   
-}
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

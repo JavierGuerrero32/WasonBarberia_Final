@@ -1,37 +1,54 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyectoev02;
 
-/**
- *
- * @author USUARIO
- */
-import modeloTablas.Cliente; // Importamos tu clase Cliente
-import java.sql.*;
+import modeloTablas.ConexionDB;
+import modeloTablas.Cliente; // Asegúrate de que el nombre coincida: Cliente o Clientes
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
+/**
+ * Capa de Acceso a Datos (DAO) para la gestión de usuarios.
+ * Integra el paquete modeloTablas con la lógica de persistencia.
+ */
 public class UsuarioDAO {
-    // Método para registrar los datos que vienen de tu diseño de Figma
-    public boolean registrarCliente(Cliente cliente) {
+
+    // Instancia de la conexión centralizada
+    private ConexionDB mysql = new ConexionDB();
+    private Connection con;
+
+    /**
+     * Registra un nuevo cliente en la base de datos software_barberia.
+     * @param cliente Objeto con los datos capturados en la interfaz.
+     * @return boolean true si el registro fue exitoso.
+     */
+    public boolean registrar(Cliente cliente) {
+        // Sentencia SQL preparada para evitar inyecciones
         String sql = "INSERT INTO cliente (nombre, apellido, celular, correo, password) VALUES (?, ?, ?, ?, ?)";
         
-        try (Connection conn = ConexionDB.getConnection(); // Usando tu clase de conexión
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            con = mysql.conectar(); // Obtiene la conexión activa
+            PreparedStatement ps = con.prepareStatement(sql);
             
-            // Aquí usamos los Getters que eliminan las advertencias amarillas
+            // Mapeo de atributos desde el modelo
             ps.setString(1, cliente.getNombre());
             ps.setString(2, cliente.getApellido());
             ps.setString(3, cliente.getCelular());
             ps.setString(4, cliente.getCorreo());
             ps.setString(5, cliente.getPassword());
-
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al registrar cliente: " + e.getMessage());
             return false;
+        } finally {
+            // Cierre seguro de la conexión
+            try {
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                System.err.println("Error al cerrar conexión: " + ex.getMessage());
+            }
         }
     }
 }

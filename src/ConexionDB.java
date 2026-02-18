@@ -1,18 +1,37 @@
-package proyectoev02;
-import java.sql.*;
+package modeloTablas;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Clase centralizada para la conexión a la base de datos software_barberia.
+ */
 public class ConexionDB {
-    public static Connection getConnection() throws SQLException {
-        // Verifica que estos datos coincidan con tu MySQL Workbench
-        String url = "jdbc:mysql://localhost:3306/software_barberia";
-        String user = "root";
-        String password = "tu_password_aqui"; // Pon aquí tu clave real
-        
+    
+    // Configuración de parámetros de conexión
+    private final String URL = "jdbc:mysql://localhost:3306/software_barberia";
+    private final String USER = "root";
+    private final String PASSWORD = ""; 
+
+    public Connection conectar() {
+        Connection con = null;
         try {
-            return DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            System.out.println("Error de conexión: " + e.getMessage());
-            throw e;
+            // Cargar el Driver de MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            // Intentar establecer la conexión
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
+            
+        } catch (ClassNotFoundException ex) {
+            // Manejo específico si falta la librería JAR
+            Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, "Driver no encontrado", ex);
+        } catch (SQLException ex) {
+            // Manejo de errores de credenciales o servidor
+            Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, "Error de SQL al conectar", ex);
         }
+        return con;
     }
 }
